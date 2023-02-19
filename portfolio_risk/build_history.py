@@ -22,10 +22,10 @@ $ python3 build_history.py --delete_table --True --fetch_from_yahoo True --build
 import argparse as ap
 import sys
 import os
-if  not './' in sys.path:
-    sys.path.append('./')
-if  not '../' in sys.path:
-    sys.path.append('../')
+# if  not './' in sys.path:
+#     sys.path.append('./')
+# if  not '../' in sys.path:
+#     sys.path.append('../')
 from risktables import pg_pandas as pg
 from os import listdir
 from os.path import isfile, join

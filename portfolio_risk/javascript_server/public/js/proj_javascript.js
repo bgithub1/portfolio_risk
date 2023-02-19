@@ -2,6 +2,7 @@
 //  reference in index.html is <script src="js/risk_tables.js"></script>
 // define the maximumn number of columns the correlation matrix can have
 const CORR_COL_LIMIT = 100;
+const DEFAULT_UPLOAD_TO_SERVER_ROUTE = '/riskdata_from_csv';
 
 function showDiv(div_id) {
     document.getElementById(div_id).classList.remove("hide");
@@ -78,7 +79,9 @@ function convert_df_portfolio(df_portfolio){
   return df_portfolio_new;
 }
 
-function display_position(json_results,tag_id,cols_to_display,json_results_key='df_risk_all') {
+function display_position(
+  json_results,tag_id,cols_to_display,
+  json_results_key='df_risk_all',page_len=10,destroy_old_datatable=false) {
   // get position data from server results
   // var df_portfolio = json_results['df_positions_all'];
   var df_portfolio = json_results[json_results_key];
@@ -100,34 +103,41 @@ function display_position(json_results,tag_id,cols_to_display,json_results_key='
     //   return {"data":c,"title":c}
     // });
     // display the datatable
-    $("#"+tag_id).dataTable( {
+    $("#"+tag_id).DataTable( {
         "data": df_portfolio,
+        "dom": 'Bfrtip',
+        "buttons":['csv','excel'],
         "columns":dt_cols,
         "order": [[0, 'asc']],
-        "pageLength": 10,
+        "pageLength": page_len,
         "searching": false,
         "lengthChange": false,
         "info":false,
         "scrollX": true,
-    } );      
+    } );
   } else {
-    // var dt = $("#"+tag_id).dataTable();
-    // dt.fnDestroy();
-    $("#"+tag_id).dataTable( {
-        "data": df_portfolio,
-        "columns":dt_cols,
-        "order": [[0, 'asc']],
-        "pageLength": 10,
-        "searching": false,
-        "lengthChange": false,
-        "info":false,
-        "scrollX": true,
-        "destroy":true,
-    } );      
-    // var dt = $("#"+tag_id).dataTable();
-    // dt.fnClearTable();
-    // dt.fnAddData(df_portfolio,redraw=true);
-  }        
+    if (destroy_old_datatable){
+      $("#"+tag_id).dataTable( {
+          "data": df_portfolio,
+          "buttons":['csv'],
+          "columns":dt_cols,
+          "order": [[0, 'asc']],
+          "pageLength": page_len,
+          "searching": false,
+          "lengthChange": false,
+          "info":false,
+          "scrollX": true,
+          "destroy":true,
+      } );
+    } else {
+      // var dt = $("#"+tag_id).dataTable();
+      var dt = $("#"+tag_id).dataTable();
+      dt.fnClearTable();
+      dt.fnAddData(df_portfolio,redraw=true);
+      dt =  $("#"+tag_id).DataTable();
+      dt.page.len(page_len).draw();
+    }
+  }
 };
 
 
@@ -166,7 +176,7 @@ function render_var_bar_plot(
 
   var plot_config = {responsive: true}
   Plotly.newPlot(output_div,data,layout,plot_config);  
-}
+};
 
 function render_portfolio_stats(
   json_results)
@@ -190,7 +200,7 @@ function render_portfolio_stats(
   document.getElementById('port_gamma').innerHTML = "Gamma: " + gamma; 
   document.getElementById('port_vega').innerHTML = "Vega: " + vega; 
   document.getElementById('port_theta').innerHTML = "Theta: " + theta; 
-}
+};
 
 function display_json_results(json_results) {
   const pos_cols_to_display =  ['symbol','position','position_var'];
@@ -201,13 +211,18 @@ function display_json_results(json_results) {
   // The position, greeks and atm_info datasets always have the same columns.  Therefore,
   //  no special treatment is necessary to re-display those datatables.
   display_position(json_results,'position',pos_cols_to_display);
+  
   render_portfolio_stats(json_results);
+  
   render_var_bar_plot(json_results);
+  
   display_position(
-    json_results,'greeks2',greeks_cols_to_display,json_results_key='df_risk_by_underlying'
+    json_results,'greeks2',greeks_cols_to_display,json_results_key='df_risk_by_underlying',
   );
+  
+
   display_position(
-    json_results,'atm_info',atm_info_cols_to_display,json_results_key='df_atm_info'
+    json_results,'atm_info',atm_info_cols_to_display,json_results_key='df_atm_info',
   );
 
   // The correlation matrix columns are equal to the number of underlyings, plus 1.
@@ -235,19 +250,36 @@ function display_json_results(json_results) {
   // Step 5: store the new df_corr data in the json_results array
   json_results['df_corr'] = df_corr;
   // Step 6: Call display_position
-  display_position(json_results,'corr_matrix',cor_matrix_cols,json_results_key='df_corr');
+  const df_risk_by_underlying_len = json_results['df_risk_by_underlying'].length;
+  const greeks2_page_len = df_risk_by_underlying_len>30 ? 30 : df_risk_by_underlying_len;  
+  display_position(json_results,'corr_matrix',
+    cor_matrix_cols,json_results_key='df_corr',
+    page_len=greeks2_page_len,
+    destroy_old_datatable=true);
 
 };
 
-// function display_risk_tables(){
-//   // get var stuff from risk_server.py
-//   // fetch and display data
-//   fetch_var(getfull=0)
-//   .then(function(json_results){
-//     // console.log(json_results);
-//     display_json_results(json_results);
-//   });  
-// }
+async function upload_csv_to_server(
+  csv_text,
+  upload_csv_route=DEFAULT_UPLOAD_TO_SERVER_ROUTE) {
+  const response = await fetch(upload_csv_route, {
+    method: 'POST',
+    // method: 'GET',
+    headers: {
+        // 'Accept': 'application/json',
+        'Content-Type': 'application/json',
+    },        
+    body: JSON.stringify({'data':csv_text})
+  })
+  if (response.ok) { // if HTTP-status is 200-299
+    // get the response body (the method explained below)
+    let json = await response.json();
+    return json;
+  } else {
+      alert("HTTP-Error: " + response.status);
+      return null;
+  }  
+};
 
 async function get_local_csv_file() {
   // const content = document.querySelector('#filecontent');
@@ -309,36 +341,6 @@ async function display_default_portfolio() {
       alert("HTTP-Error: " + response.status);
       return null;
   }  
-};
-
-async function upload_csv_to_server(csv_text){
-  const response = await fetch('/riskdata_from_csv', {
-    method: 'POST',
-    // method: 'GET',
-    headers: {
-        // 'Accept': 'application/json',
-        'Content-Type': 'application/json',
-    },        
-    body: JSON.stringify({'data':csv_text})
-  })
-  if (response.ok) { // if HTTP-status is 200-299
-    // get the response body (the method explained below)
-    let json = await response.json();
-    return json;
-  } else {
-      alert("HTTP-Error: " + response.status);
-      return null;
-  }  
-
-    // .then((response) => response.json())
-    // .then((result) => {
-    //   console.log('Success:', Object.keys(result));
-    //   return result;
-    // })
-    // .catch((error) => {
-    //   console.log('Error:'+ error);
-    //   return null;
-    // });    
 };
 
 function initit(){
