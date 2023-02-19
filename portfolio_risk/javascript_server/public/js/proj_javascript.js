@@ -297,6 +297,7 @@ async function get_local_csv_file() {
     // change carriage return and line feed to semi-colon
     var csv_text = reader.result.replaceAll('\n',';');
     csv_text = csv_text.replaceAll('\r',';');
+    csv_text = csv_text.replaceAll('"','');
     // send the csv text string to express server, which will send it to python server
     showDiv('spinner');
     upload_csv_to_server(csv_text)
@@ -331,6 +332,7 @@ async function display_default_portfolio() {
     var csv_text = json['csv_text'];
     csv_text = csv_text.replaceAll('\n',';');
     csv_text = csv_text.replaceAll('\r',';');
+    csv_text = csv_text.replaceAll('"','');
     showDiv('spinner');
     upload_csv_to_server(csv_text)
     .then(function(json_results){
