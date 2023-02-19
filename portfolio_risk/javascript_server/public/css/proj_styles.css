@@ -75,6 +75,16 @@
       background-color: #f2d472;
     }
 
+    .dt_button {
+/*      display: flex;*/
+      justify-content: center;
+      align-items: center;
+      font-family: 'Times New Roman', serif;
+      font-weight: bold;
+      text-align: center;
+      background-color: #33b249;
+    }
+
     .getdatabutton {
       display: flex;
       justify-content: center;

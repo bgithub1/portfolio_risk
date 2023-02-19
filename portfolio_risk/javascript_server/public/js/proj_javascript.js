@@ -106,7 +106,10 @@ function display_position(
     $("#"+tag_id).DataTable( {
         "data": df_portfolio,
         "dom": 'Bfrtip',
-        "buttons":['csv','excel'],
+        // "buttons":['csv'],
+        "buttons":[
+          {extend:'csv',text:'Click to Download',className:'dt_button'}
+        ],
         "columns":dt_cols,
         "order": [[0, 'asc']],
         "pageLength": page_len,
@@ -119,7 +122,9 @@ function display_position(
     if (destroy_old_datatable){
       $("#"+tag_id).dataTable( {
           "data": df_portfolio,
-          "buttons":['csv'],
+          "buttons":[
+            {extend:'csv',text:'Click to Download',className:'dt_button'}
+          ],
           "columns":dt_cols,
           "order": [[0, 'asc']],
           "pageLength": page_len,
