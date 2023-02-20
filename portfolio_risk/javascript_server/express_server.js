@@ -25,6 +25,8 @@ const FASTAPI_ROUTE_get_var = "/get_risk";
 const FASTAPI_ROUTE_default_portfolio = '/default_portfolio';
 const FASTAPI_ROUTE_riskdata_from_csv = '/riskdata_from_csv';
 
+const DEFAULT_PORTFOLIO = (argv.length>2) ? argv[2] :  '../spdr_stocks.csv';
+
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json({limit: '50mb'}));
 app.use(express.urlencoded({limit: '50mb'}));
@@ -69,7 +71,7 @@ app.get(FASTAPI_ROUTE_get_var, (req, res) => {
 });
 
 app.get(FASTAPI_ROUTE_default_portfolio, (req,res) => {
-  fs.readFile('../spdr_stocks.csv','utf8', function(err, data) { 
+  fs.readFile(DEFAULT_PORTFOLIO,'utf8', function(err, data) { 
     if (err) {
       console.error(err);
       res.json({error:err});

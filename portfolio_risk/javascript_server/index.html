@@ -17,11 +17,17 @@
       <div class="col-xs-4"></div>
     </div>
     <div class="row align-items-center">
-<!--       <div class="col-xs-1"></div> -->
-      <input id="file-upload" class="col-xs-12" type="file" accept=".csv" onchange="get_local_csv_file()" />
-<!--       <div class="col-xs-1"></div> -->
+<!--       <button  class="col-xs-12">
+        <label  for="commodity">Select An Example:&nbsp;</label>
+        <select id="example_portfolios" name="example_portfolios" onchange="get_example_portfolio()" style="border:none">
+          <option value="spdr_etfs">SPDR ETFs</option>
+          <option value="spdr_etfs">SPDR ETF Options</option>
+          <option value="selected_stocks">Selected Stocks</option>
+          <option value="upload_file">Upload Local CSV File</option>
+        </select> 
+      </button> -->
+      <input id="file-upload" class="col-xs-12" type="file" accept=".csv" onchange="get_local_csv_file()"/>
     </div>   
-
     <div class="row">
       <div class="bord">
         <button id="port_var" class="port_stats  col-xs-6"></button>
@@ -52,7 +58,7 @@
     <div class="row">
       <div class="bord col-sm-12">
         <table class="stripe" style="width:99%" id="greeks2">
-          <caption style="color:#47bacc;text-align:center;font-weight: bold;">Underlying Greeks</caption>
+          <caption class="table_caption">Underlying Greeks</caption>
         </table>
       </div>   
     </div> 
@@ -60,8 +66,7 @@
     <div class="row">
       <div class="bord col-sm-12">
         <table class="stripe" style="width:99%" id="atm_info">
-          <caption style="color:#47bacc;text-align:center;font-weight: bold;">Price Information
-          </caption>
+          <caption class="table_caption">Price Information</caption>
         </table>
       </div>   
     </div> 
@@ -69,8 +74,7 @@
     <div class="row">
       <div class="bord col-sm-12">
         <table class="stripe" style="width:99%" id="corr_matrix">
-          <caption style="color:#47bacc;text-align:center;font-weight: bold;">Correlation Matrix
-          </caption>
+          <caption class="table_caption">Correlation Matrix</caption>
         </table>
       </div>   
     </div> 

@@ -75,13 +75,22 @@
       background-color: #f2d472;
     }
 
+    .table_caption {
+      color:#47bacc;
+/*      text-align:center;
+*/      text-align:left;
+      align-items: left;
+      font-weight: bold;
+    }
     .dt_button {
 /*      display: flex;*/
       justify-content: center;
-      align-items: center;
+/*      align-items: center;
+*/      align-items: left;
       font-family: 'Times New Roman', serif;
       font-weight: bold;
-      text-align: center;
+/*      text-align: center;
+*/      text-align: left;
       background-color: #33b249;
     }
 

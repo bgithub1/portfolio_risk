@@ -30,7 +30,7 @@ const cols_conversions = {
   'rho':'rho',
   'theta':'theta',
   'unit_var':'uvar',
-  'position_var':'pvar',
+  'position_var':'VaR',
   'd1':'d1',
   'd5':'d5',
   'd10':'d10',
@@ -81,7 +81,8 @@ function convert_df_portfolio(df_portfolio){
 
 function display_position(
   json_results,tag_id,cols_to_display,
-  json_results_key='df_risk_all',page_len=10,destroy_old_datatable=false) {
+  json_results_key='df_risk_all',page_len=10,
+  destroy_old_datatable=false,caption_text='') {
   // get position data from server results
   // var df_portfolio = json_results['df_positions_all'];
   var df_portfolio = json_results[json_results_key];
@@ -106,7 +107,6 @@ function display_position(
     $("#"+tag_id).DataTable( {
         "data": df_portfolio,
         "dom": 'Bfrtip',
-        // "buttons":['csv'],
         "buttons":[
           {extend:'csv',text:'Click to Download',className:'dt_button'}
         ],
@@ -120,8 +120,13 @@ function display_position(
     } );
   } else {
     if (destroy_old_datatable){
+      $("#"+tag_id).dataTable( {"destroy":true});
+      const table_caption = 
+      '<caption class="table_caption">'+caption_text+'</caption>';
+      $('#'+tag_id).append(table_caption);
       $("#"+tag_id).dataTable( {
           "data": df_portfolio,
+          "dom": 'Bfrtip',
           "buttons":[
             {extend:'csv',text:'Click to Download',className:'dt_button'}
           ],
@@ -260,7 +265,8 @@ function display_json_results(json_results) {
   display_position(json_results,'corr_matrix',
     cor_matrix_cols,json_results_key='df_corr',
     page_len=greeks2_page_len,
-    destroy_old_datatable=true);
+    destroy_old_datatable=true,
+    caption_text="Correlation Matrix");
 
 };
 
@@ -286,6 +292,15 @@ async function upload_csv_to_server(
   }  
 };
 
+
+async function get_example_portfolio() {
+  var selected_value = document.getElementById('example_portfolios').value;
+  if (selected_value==='upload_file'){
+    showDiv('file-upload');
+  } else {
+    hideDiv('file-upload');
+  }
+}
 async function get_local_csv_file() {
   // const content = document.querySelector('#filecontent');
   const [file] = document.querySelector('input[type=file]').files;
@@ -351,7 +366,6 @@ async function display_default_portfolio() {
 };
 
 function initit(){
-  // hideDiv('spinner');
-  // display_risk_tables();
+  hideDiv('file-upload');
   display_default_portfolio();
 }

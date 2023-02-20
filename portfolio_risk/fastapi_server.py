@@ -126,51 +126,6 @@ def transform_df(df:pd.DataFrame):
 
 
 
-# @app.post("/df_from_csv")
-# async def df_from_csv_text(csv_text: CsvData):
-#     # This route is an http post route, that accepts a text string of 
-#     #   csv data.  Each csv line is separated by a ";".  The csv data on 
-#     #   each line is separated by a ",".
-#     # The route parses the input csv_text, and returns a json version
-#     #   of a DataFrame from that text.
-#     csv_text = csv_text.data
-#     print(type(csv_text))
-#     print(csv_text)
-#     list_data = csv_text.split(';')
-#     list_data = [
-#         v.split(',')
-#         for v in list_data
-#         if len(v)>0
-#     ]
-#     cols = list_data[0]
-#     dict_data = [
-#         {cols[i]:v[i] for i in range(len(cols))}
-#         for v in list_data[1:]
-#         if len(v)==len(cols)
-#     ]
-#     df = pd.DataFrame(dict_data)
-#     df = transform_df(df)
-#     return_dict = df.to_dict(orient='records')
-#     return {'csv_data_from_df':return_dict}
-
-# @app.post("/df_from_csv")
-# async def df_from_csv_json(csv_json_in: CsvData):
-#   # This route is an http post route, that accepts a text string of 
-#   #   csv data.  Each csv line is separated by a ";".  The csv data on 
-#   #   each line is separated by a ",".
-#   # The route parses the input csv_text, and returns a json version
-#   #   of a DataFrame from that text.
-#   print(type(csv_json_in))
-#   print(csv_json_in)
-#   csv_json_text = csv_json_in.data
-#   csv_json = json.loads(csv_json_text)
-#   df = pd.DataFrame(csv_json)
-#   df = transform_df(df)
-#   return_dict = df.to_dict(orient='records')
-#   return {'csv_data_from_df':return_dict}
-
-
-
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
             prog = 'risk_server',
