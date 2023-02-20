@@ -366,6 +366,6 @@ async function display_default_portfolio() {
 };
 
 function initit(){
-  hideDiv('file-upload');
+  // hideDiv('file-upload');
   display_default_portfolio();
 }
