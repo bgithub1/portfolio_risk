@@ -4,23 +4,16 @@
 const CORR_COL_LIMIT = 100;
 const DEFAULT_UPLOAD_TO_SERVER_ROUTE = '/riskdata_from_csv';
 
-// function showDiv(div_id) {
-//     document.getElementById(div_id).classList.remove("hide");
-//     document.getElementById(div_id).classList.add("show");
-// };
-
-// function hideDiv(div_id) {
-//     document.getElementById(div_id).classList.remove("show");
-//     document.getElementById(div_id).classList.add("hide");
-// };
-
 function showDiv(div_id) {
-    document.getElementById(div_id).classList.remove("d-none");
+    document.getElementById(div_id).classList.remove("hide");
+    document.getElementById(div_id).classList.add("show");
 };
 
 function hideDiv(div_id) {
-    document.getElementById(div_id).classList.add("d-none");
+    document.getElementById(div_id).classList.remove("show");
+    document.getElementById(div_id).classList.add("hide");
 };
+
 
 // const get_var_url = "/riskdata"
 
