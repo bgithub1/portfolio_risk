@@ -13,7 +13,7 @@
 <!--       <nav class="navbar navbar-expand-lg navbar-light bg-light"> -->
       <nav class="navbar navbar-light bg-light col-12 justify-content-center">
         <div id="navtitle" class="col-5">
-          <a class="navbar-brand me-auto" href="#">LiveRisk Portfolio Risk</a
+          <a class="navbar-brand me-auto" style="color:blue;font-weight: bold;font-family: 'Times New Roman', serif" href="#">LiveRisk Portfolio Risk</a
           >
         </div>
 
@@ -38,13 +38,17 @@
               >
             </li>
             <li id="use_spdr_etfs" onclick="get_example_portfolio('use_spdr_etfs')" class="nav-item">
-              <a class="nav-link" href="#">Use SPDR ETF Portfolio
+              <a class="nav-link" href="#">Show SPDR ETF Example Portfolio
               </a>
             </li>
-          <li d="use_spdr_etf_options" onclick="get_example_portfolio('use_spdr_etf_options')" class="nav-item">
-            <a class="nav-link" href="#">Use SPDR ETF Options Portfolio
-            </a>
-          </li>
+            <li id="use_spdr_etf_options" onclick="get_example_portfolio('use_spdr_etf_options')" class="nav-item">
+              <a class="nav-link" href="#">Show SPDR ETF Options Example Portfolio
+              </a>
+            </li>
+            <li id="use_default_portfolio" onclick="get_example_portfolio('use_default_portfolio')" class="nav-item">
+              <a class="nav-link" href="#">Show the Default Portfolio
+              </a>
+            </li>
           </ul>
         </div>
 

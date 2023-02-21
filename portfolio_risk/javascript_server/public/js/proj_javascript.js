@@ -315,10 +315,13 @@ async function get_example_portfolio(selected_id) {
     hideDiv('file-upload');  
   }
   
+    // get from server if any of the below items were clicked 
   if (selected_id==='use_spdr_etfs'){
-    // get from server
+    display_default_portfolio(alternate_portfolio='spdr_etfs')
   } else if (selected_id==='use_spdr_etf_options'){
-    // get from server
+    display_default_portfolio(alternate_portfolio='spdr_etf_options')
+  } else if (selected_id==='use_default_portfolio'){
+    display_default_portfolio()
   }
 
   // CLEAN UP
@@ -412,8 +415,11 @@ async function get_local_csv_file() {
   }
 };
 
-async function display_default_portfolio() {
-  const response = await fetch('/default_portfolio', {
+async function display_default_portfolio(alternate_portfolio='') {
+  var portfolio_route = '/default_portfolio';
+  portfolio_route = portfolio_route + `?alternate_portfolio=${alternate_portfolio}`;
+
+  const response = await fetch(portfolio_route, {
     method: 'GET',
     headers: {
         // 'Accept': 'application/json',

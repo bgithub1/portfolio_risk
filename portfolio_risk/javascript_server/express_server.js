@@ -71,7 +71,17 @@ app.get(FASTAPI_ROUTE_get_var, (req, res) => {
 });
 
 app.get(FASTAPI_ROUTE_default_portfolio, (req,res) => {
-  fs.readFile(DEFAULT_PORTFOLIO,'utf8', function(err, data) { 
+  var portfolio_csv_to_get = DEFAULT_PORTFOLIO;
+  const alt_portfolio = req.query.alternate_portfolio;
+  console.log(`alt_portfolio: ${alt_portfolio}`);
+
+  if (alt_portfolio  === 'spdr_etfs') {
+    portfolio_csv_to_get = '../spdr_etfs.csv'
+  } else if (alt_portfolio  === 'spdr_etf_options') {
+    portfolio_csv_to_get = '../spdr_etf_options.csv'
+  } 
+
+  fs.readFile(portfolio_csv_to_get,'utf8', function(err, data) { 
     if (err) {
       console.error(err);
       res.json({error:err});
@@ -101,7 +111,7 @@ app.post(FASTAPI_ROUTE_riskdata_from_csv, (req, res) => {
     })
       // .then((response) => response.json())
       .then((response) => {
-        console.log('Success:', response.data);
+        console.log('Success:', Object.keys(response.data));
         res.json(response.data);
       })
       .catch((error) => {
