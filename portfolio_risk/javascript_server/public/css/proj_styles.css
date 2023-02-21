@@ -83,14 +83,14 @@
       font-weight: bold;
     }
     .dt_button {
-/*      display: flex;*/
+      display: flex;
       justify-content: center;
-/*      align-items: center;
-*/      align-items: left;
+      align-items: center;
+/*      align-items: left;*/
       font-family: 'Times New Roman', serif;
       font-weight: bold;
-/*      text-align: center;
-*/      text-align: left;
+/*      text-align: center;*/      
+      text-align: left;
       background-color: #33b249;
     }
 

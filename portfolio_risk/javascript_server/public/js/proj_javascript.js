@@ -90,7 +90,7 @@ function display_position(
   json_results,tag_id,cols_to_display,
   json_results_key='df_risk_all',page_len=10,
   destroy_old_datatable=false,caption_text='',
-  caption_style="text-align: center") {
+  caption_style="text-align: left;padding-left:20px") {
   // get position data from server results
   // var df_portfolio = json_results['df_positions_all'];
   var df_portfolio = json_results[json_results_key];
@@ -274,8 +274,7 @@ function display_json_results(json_results) {
     cor_matrix_cols,json_results_key='df_corr',
     page_len=greeks2_page_len,
     destroy_old_datatable=true,
-    caption_text="Correlation Matrix",
-    caption_style="padding-left:20px");
+    caption_text="<h4>Correlation Matrix:</h4>");
 
 };
 
