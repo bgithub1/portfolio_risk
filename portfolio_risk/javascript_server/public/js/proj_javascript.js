@@ -89,7 +89,8 @@ function convert_df_portfolio(df_portfolio){
 function display_position(
   json_results,tag_id,cols_to_display,
   json_results_key='df_risk_all',page_len=10,
-  destroy_old_datatable=false,caption_text='') {
+  destroy_old_datatable=false,caption_text='',
+  caption_style="text-align: center") {
   // get position data from server results
   // var df_portfolio = json_results['df_positions_all'];
   var df_portfolio = json_results[json_results_key];
@@ -129,7 +130,7 @@ function display_position(
     if (destroy_old_datatable){
       $("#"+tag_id).dataTable( {"destroy":true});
       const table_caption = 
-      '<caption class="table_caption">'+caption_text+'</caption>';
+      `<caption class="table_caption" style="${caption_style}">` + caption_text+'</caption>';
       $('#'+tag_id).append(table_caption);
       $("#"+tag_id).dataTable( {
           "data": df_portfolio,
@@ -273,7 +274,8 @@ function display_json_results(json_results) {
     cor_matrix_cols,json_results_key='df_corr',
     page_len=greeks2_page_len,
     destroy_old_datatable=true,
-    caption_text="Correlation Matrix");
+    caption_text="Correlation Matrix",
+    caption_style="padding-left:20px");
 
 };
 
@@ -300,14 +302,84 @@ async function upload_csv_to_server(
 };
 
 
-async function get_example_portfolio() {
-  var selected_value = document.getElementById('example_portfolios').value;
-  if (selected_value==='upload_file'){
+async function get_example_portfolio(selected_id) {
+  // var selected_value = document.getElementById('example_portfolios').value;
+  // if (selected_value==='upload_file'){
+  //   showDiv('file-upload');
+  // } else {
+  //   hideDiv('file-upload');
+  // }
+  if (selected_id==='upload_portfolio'){
     showDiv('file-upload');
   } else {
-    hideDiv('file-upload');
+    hideDiv('file-upload');  
   }
-}
+  
+  if (selected_id==='use_spdr_etfs'){
+    // get from server
+  } else if (selected_id==='use_spdr_etf_options'){
+    // get from server
+  }
+
+  // CLEAN UP
+  //  THE EXPLANATION BELOW EXPLAINS HOW YOU TOGGLE A navbar  using javascript
+  // collapse navbar
+  // 1. add "collapsed" to button's class
+  // 2. change button's aria-expanded attribute to "true"
+  // 3. remove "show" from the nav_expanded div
+
+  // so ...
+  // CASE 1: WHEN THE NAVBAR IS "collapsed":
+  // nav_button button will have the attributes:
+  // <button 
+  //   class="navbar-toggler collapsed" CHANGES
+  //   type="button" 
+  //   data-bs-toggle="collapse" 
+  //   data-bs-target="#navbarSupportedContent" 
+  //   aria-controls="navbarSupportedContent" 
+  //   aria-expanded="false" CHANGES
+  //   aria-label="Toggle navigation">
+  //     <span class="navbar-toggler-icon"></span>
+  //  </button>
+
+  // and, nav_expanded div will have the attributes:
+  // <div 
+  //   class="navbar-collapse collapse" CHANGES
+  //   id="navbarSupportedContent" 
+  //   style="">
+  //  </div>
+
+  // CASE 2: WHEN THE NAVBAR IS "expanded":
+  // nav_button button will have the attributes:
+  // <button 
+  //   class="navbar-toggler"  CHANGES
+  //   type="button" 
+  //   data-bs-toggle="collapse" 
+  //   data-bs-target="#navbarSupportedContent" 
+  //   aria-controls="navbarSupportedContent" 
+  //   aria-expanded="true" CHANGES
+  //   aria-label="Toggle navigation">
+  //     <span class="navbar-toggler-icon"></span>
+  //  </button>
+
+  // and, nav_expanded div will have the attributes:
+  // <div 
+    // class="navbar-collapse collapse show" CHANGES
+    // id="navbarSupportedContent" 
+    // style="">
+  // </div>
+  
+  // 1. add "collapsed" to button's class attribute
+   const nav_button = document.getElementById('nav_button');
+   nav_button.classList.add("collapsed");
+  // 2. change button's aria-expanded attribute to "true"
+   nav_button.setAttribute('aria-expanded','true');
+  // 3. remove "show" from the nav_expanded div's class attrivute
+  const nav_expanded_div = document.getElementById('nav_expanded_div');
+  nav_expanded_div.classList.remove("show");
+  
+};
+
 async function get_local_csv_file() {
   // const content = document.querySelector('#filecontent');
   const [file] = document.querySelector('input[type=file]').files;
@@ -373,6 +445,6 @@ async function display_default_portfolio() {
 };
 
 function initit(){
-  // hideDiv('file-upload');
+  hideDiv('file-upload');
   display_default_portfolio();
 }

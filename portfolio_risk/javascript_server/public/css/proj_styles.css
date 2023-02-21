@@ -141,6 +141,18 @@
     border: 1px solid rgba(0, 0, 0, 0.8);
   }
 
+  .navtitle {
+    margin-left: 20px;
+    font-size: var(--button_font);
+    font-weight: bold;
+    font-family: 'Times New Roman', serif;
+    height:50px;
+    text-align: center;
+    background-color:##ffff0;
+    vertical-align:middle;
+    color:white;
+  }
+
   .fstitle {
     font-size: var(--button_font);
     font-weight: bold;
@@ -152,7 +164,7 @@
   }
 
   .port_stats {
-    height:60px;
+    height:40px;
     font-family: 'Times New Roman', serif;
     font-weight: bold;
     text-align: center;
