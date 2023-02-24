@@ -96,11 +96,12 @@ class YahooFetcher():
         return df
 
 class RedisFetcher():
-    def __init__(self,redis_port=6379,redis_host='127.0.0.1'):
+    def __init__(self,redis_port=6379,redis_host='127.0.0.1',return_exceptions=False):
         self.history_dict = {}
         self.redis_port = redis_port
         redis_db = redis.Redis(host = redis_host,port=redis_port,db=0)
         self.redis_db = redis_db
+        self.return_exceptions = return_exceptions
 
     def fetch_histories(self,symbol_list,dt_beg,dt_end):
         for symbol in symbol_list:
@@ -111,7 +112,13 @@ class RedisFetcher():
     def fetch_history(self,symbol,dt_beg,dt_end):
         context = pa.default_serialization_context()
         key = f'{symbol}_csv'
-        df = context.deserialize(redis_db.get(key))
+        try:
+            df = context.deserialize(self.redis_db.get(key))
+        except Exception as e:
+            if self.return_exceptions:
+                return {'ERROR':e}
+            else:
+                raise(ValueError(str(e)))
         return df
 
 
