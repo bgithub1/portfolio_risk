@@ -13,7 +13,7 @@ import plotly.graph_objs as go
 from plotly.graph_objs.layout import Font,Margin
 from plotly.offline import iplot
 import plotly.tools as tls
-import pandasql as psql
+# import pandasql as psql
 import importlib
 import re
 import logging
