@@ -87,8 +87,10 @@ class YahooFetcher():
         df = df.sort_values('date')
         df.index = list(range(len(df)))
         # make adj close the close
-        df['Close'] = df['Adj Close']
-        df = df.drop(['Adj Close'],axis=1)
+        if 'Adj Close' in df.columns.values:
+            df['Close'] = df['Adj Close']
+            df = df.drop(['Adj Close'],axis=1)
+        df.columns = [col[0] for col in df.columns.values]
         cols = df.columns.values 
         cols_dict = {c:c[0].lower() + c[1:] for c in cols}
         df = df.rename(columns = cols_dict)
